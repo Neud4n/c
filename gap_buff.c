@@ -4,6 +4,7 @@
 #define INITIAL_SIZE 15
 #define GAP_SIZE 5
 #define CAN_MOVE_TO_LEFT(gb) ((gb)->gap_start >0)
+#define CAN_MOVE_TO_RIGHT(gb) ((gb)->gap_end < (gb)->capacity)
 
 typedef struct GapBuffer {
     char * buffer;
@@ -15,6 +16,7 @@ typedef struct GapBuffer {
 GapBuffer * create_buffer();
 void insert_char(GapBuffer *, char);
 void move_cursor_left(GapBuffer *);
+void move_cursor_right(GapBuffer *);
 
 int main()
 {
@@ -31,7 +33,8 @@ GapBuffer * create_buffer(){
 }
 
 void insert_char(GapBuffer *gb, char c){
-    if(gb->gap_start == gb->gap_start){
+    if(gb->gap_start == gb->gap_end){
+        // Si el gap está lleno, no puedo insertar.
         return;
     }
     gb->buffer[gb->gap_start++] = c;
@@ -42,5 +45,13 @@ void move_cursor_left(GapBuffer *gb){
         gb->gap_start--;
         gb->gap_end--;
         gb->buffer[gb->gap_end] = gb->buffer[gb->gap_start];
+    }
+}
+
+void move_cursor_right(GapBuffer *gb){
+    if(CAN_MOVE_TO_RIGHT(gb)){
+        gb->buffer[gb->gap_start] = gb->buffer[gb->gap_end];
+        gb->gap_start++;
+        gb->gap_end++;
     }
 }
