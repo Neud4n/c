@@ -1,4 +1,5 @@
-// Basicamente quiero imprimir el contenido de un archivo
+// Basicamente quiero imprimir el contenido de un archivo, linea a linea.
+// 
 // Autor: d a n
 #include <stdio.h>
 #include <stdbool.h>
@@ -19,8 +20,14 @@ void leerArchivo(const char * str){
         exit(EXIT_FAILURE);
     }
     char * line = malloc(100);
+    char * word = "Hello";
+    char * searched;
     while(fgets(line, 100, fptr) != NULL){
-        printf("%s", line);
+        searched = strstr(line, word);
+        if(searched != NULL){
+            printf("%s", line);
+        }
+        
     }
     fclose(fptr);
     free(line);
