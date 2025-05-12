@@ -1,15 +1,17 @@
-// Basicamente quiero imprimir el contenido de un archivo, linea a linea.
-// 
+// Basicamente quiero imprimir el contenido especifico de un archivo.
 // Autor: d a n
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
+
+typedef struct Proceso{
+    int pid;
+    char name[50];
+}Proceso;
 
 void leerArchivo(const char * str);
 
 int main(){
-    leerArchivo("./01_rope.c");
+    leerArchivo("./status");
     return 0;
 }
 
@@ -20,15 +22,30 @@ void leerArchivo(const char * str){
         exit(EXIT_FAILURE);
     }
     char * line = malloc(100);
-    char * word = "Hello";
-    char * searched;
-    while(fgets(line, 100, fptr) != NULL){
-        searched = strstr(line, word);
-        if(searched != NULL){
-            printf("%s", line);
+    Proceso p;
+    while(fgets(line, 100,fptr) != NULL){
+        if((sscanf(line,"Name:\t%s", p.name)) == 1){
+            printf("Proceso: %s\n", p.name);
         }
-        
+        if((sscanf(line,"Pid:\t%d", &p.pid)) == 1){
+            printf("PID: %i\n", p.pid);
+        }
     }
     fclose(fptr);
     free(line);
 }
+
+    // Lineas de código que al final no uso.
+    //char * processName = "Name";
+    //char * processPid = "Pid";
+    //char * searched;
+    /*
+    while(fgets(line, 100, fptr) != NULL){
+        if((searched = strstr(line, processName)) != NULL){
+            sscanf(line,"Name:\t%s", name);
+        }
+        if((searched = strstr(line, processPid)) != NULL){
+            sscanf(line,"Pid:\t%d", &pid);
+        }
+    }
+    */
